@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <h1>Hello Yo!</h1>
+        <ul>
+            {% for picture in pictures %}
+            <li>
+                {{ picture.title }}
+                {{ picture.artist }}
+                <img src= "{{ picture.url }}">
+               <p> Comments: {{ picture.comments.count }} </p>
+            </li>            
+            {% endfor %}
+        </ul>
+
+     
+</body>
+</html>
+
+
+<!-- <h1>Contacts</h1>
+<ul>
+    {% for contact in contacts %}
+        <li>
+            <p> {{ contact.full_name }} </p>
+            <p> {{ contact.email_address }} </p>
+            <p> {{ contact.notes }} </p>
+
+        </li>
+    {% endfor %}
+</ul> -->
