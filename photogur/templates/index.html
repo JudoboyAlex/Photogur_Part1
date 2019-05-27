@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,20 +8,22 @@
     <title>Document</title>
 </head>
 <body>
-        <h1>Hello Yo!</h1>
+    {% block content %}
+        
         <ul>
             {% for picture in pictures %}
             <a href="{% url 'picture_details' id=picture.pk %}">
             <li>
-                {{ picture.title }}
-                {{ picture.artist }}
                 <img src= "{{ picture.url }}">
-               <p> Comments: {{ picture.comments.count }} </p>
+                <p>{{ picture.title }} by
+                {{ picture.artist }}
+                </p>
+               <!-- <p> Comments: {{ picture.comments.count }} </p> -->
             </li>  
         </a>          
             {% endfor %}
         </ul>
-
+    {% endblock %}
      
 </body>
 </html>
