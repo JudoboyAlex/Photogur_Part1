@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Another Picture Page</title>
+</head>
+<body>
+
+    {% block content %}
+    <h2>Here is the result</h2>
+    <p>Search Results:{{ pictures.count }} </p>
+        <ul>
+            {% for picture in pictures %}
+            <a href="{% url 'picture_details' id=picture.pk %}">
+            <li>
+                <img src= "{{ picture.url }}">
+                <p>{{ picture.title }} by
+                {{ picture.artist }}
+                </p>
+               <!-- <p> Comments: {{ picture.comments.count }} </p> -->
+            </li>  
+        </a>          
+            {% endfor %}
+        </ul>
+   
+    
+
+    {% endblock %}
+</body>
+</html>

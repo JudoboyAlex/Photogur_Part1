@@ -1,27 +1,33 @@
 {% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     {% block content %}
-    
-    <h1>{{picture.title}}</h1>
-    <h2>By {{picture.artist}}</h2>
-    
-    <img src="{{picture.url}}" alt="{{picture.title}}" />
 
-   
+    <h1>{{ picture.title }}</h1>
+    <h2>By {{ picture.artist }}</h2>
+    
+    <img src="{{ picture.url }}" alt="{{ picture.title }}" />
+
     {% for comment in picture.comments.all %}
-      <p>{{ comment.name }}</p>
-      <li>{{comment.message}}</li>
-      {% endfor %}
+    <p>{{ comment.name }}</p>
+    <li>{{ comment.message }}</li>
+    {% endfor %}
+
+    <form action="{% url 'create_comment' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="picture" value="{{ picture.pk }}" />
+      <span>Name</span> <input type="text" name='name'>
+      <input type="text" name="message" style="width: 800px; height: 145px;">
+      <button type="submit">Submit Comment</button>
+    </form>
+
     {% endblock %}
-
-
-</body>
+  </body>
 </html>
