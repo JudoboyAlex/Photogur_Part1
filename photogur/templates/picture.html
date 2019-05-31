@@ -12,12 +12,13 @@
 
     <h1>{{ picture.title }}</h1>
     <h2>By {{ picture.artist }}</h2>
-    
+    Uploaded By {{picture.user.username}} 
     <img src="{{ picture.url }}" alt="{{ picture.title }}" />
 
     {% for comment in picture.comments.all %}
     <p>{{ comment.name }}</p>
     <li>{{ comment.message }}</li>
+    
     {% endfor %}
 
     <form action="{% url 'create_comment' %}" method="post">

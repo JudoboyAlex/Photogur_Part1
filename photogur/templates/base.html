@@ -21,6 +21,13 @@
         <input type="submit" value="Search" />
       </form>
     </header>
+    {% if request.user.is_authenticated %}
+    <!-- display link to log out -->
+    <a href="{% url 'logout' %}">logout</a>
+  {% else %}
+    <!-- display link to login page -->
+    <a href="{% url 'login' %}">login</a>
+  {% endif %}
 
     {% block content %} 
     {% endblock %}
