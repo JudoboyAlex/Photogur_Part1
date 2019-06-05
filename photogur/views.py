@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from photogur.models import Picture, Comment
 from django.views.decorators.http import require_http_methods
 from photogur.forms import LoginForm, PictureForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 def pictures_page(request):
     context = {'pictures': Picture.objects.all()}
@@ -42,6 +43,8 @@ def create_comment(request):
 #     return HttpResponse(http_response)
   
 def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/pictures')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -66,6 +69,8 @@ def logout_view(request):
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/pictures')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -80,10 +85,11 @@ def signup(request):
     html_response =  render(request, 'signup.html', {'form': form})
     return HttpResponse(html_response)
 
+@login_required
 def submit_picture(request):
     if request.method == 'POST':
-      form = PictureForm(request.POST)
-      if form.is_valid():
+        form = PictureForm(request.POST)
+        if form.is_valid():
             picture = form.save(commit=False)
             picture.user = request.user
             picture.save()
@@ -96,17 +102,16 @@ def submit_picture(request):
         response = render(request, 'addpicture.html', context)
         return HttpResponse(response)
 
-# def post_new(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('post_detail', pk=post.pk)
-#     else:
-#         form = PostForm()
-#     return render(request, 'blog/post_edit.html', {'form': form})
-
+@login_required
+def edit_picture(request, id):
+    obj = get_object_or_404(Picture, id = id, user=request.user.id)
+    if request.method == "POST":
+        form = PictureForm(request.POST, instance= obj)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('picture_details', id=obj.id)
+    else:
+        form = PictureForm(instance=obj)
+    return render(request, 'edit_picture.html', {'form':form})
   

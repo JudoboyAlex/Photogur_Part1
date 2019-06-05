@@ -21,6 +21,9 @@
     
     {% endfor %}
 
+    <a  href="{% url 'edit_picture' id=picture.id %}"><button type="button">Edit</button></a>
+
+
     <form action="{% url 'create_comment' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="picture" value="{{ picture.pk }}" />
